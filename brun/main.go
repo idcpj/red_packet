@@ -20,8 +20,9 @@ func main() {
 	app := infra.NewBootApplication(conf)
 	app.Start()
 
-	//i := make(chan int, 0)
-	//<-i
+	//做循环用
+	ints := make(chan int)
+	<-ints
 }
 
 

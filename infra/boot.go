@@ -19,13 +19,13 @@ func NewBootApplication(conf kvs.ConfigSource) *BootApplication {
 
 func (b *BootApplication) Start() {
 	// 1.初始化 starter
-	logrus.Info("init")
+	logrus.Info("init() ...")
 	b.init()
 	// 2.安装 starter
-	logrus.Info("setup")
+	logrus.Info("setup() ...")
 	b.setup()
 	// 3.启动 starter
-	logrus.Info("start")
+	logrus.Info("start() ...")
 	b.start()
 }
 

@@ -3,7 +3,6 @@ package base
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/idcpj/red_packet/infra"
-	"github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
 	"github.com/tietang/props/kvs"
 )
@@ -21,17 +20,14 @@ type DBxDatabaseStater struct {
 func (s *DBxDatabaseStater) Setup(ctx infra.StarterContext) {
 	conf := ctx.Props()
 	settings := dbx.Settings{}
-	logrus.Info("conf : ",conf)
-	logrus.Info("settings : ",settings.ShortDataSourceName())
 
 	err := kvs.Unmarshal(conf, &settings, "mysql")
 	if err != nil {
 		panic(err)
 	}
-	logrus.Info("settings : ",settings.ShortDataSourceName())
 	db, err := dbx.Open(settings)
 	if err != nil {
-		panic(err)
+		panic("open mysql:"+err.Error())
 	}
 	database = db
 
