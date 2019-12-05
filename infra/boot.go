@@ -1,7 +1,7 @@
 package infra
 
 import (
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/tietang/props/kvs"
 )
 
@@ -19,13 +19,13 @@ func NewBootApplication(conf kvs.ConfigSource) *BootApplication {
 
 func (b *BootApplication) Start() {
 	// 1.初始化 starter
-	logrus.Info("init() ...")
+	log.Info("init() ...")
 	b.init()
 	// 2.安装 starter
-	logrus.Info("setup() ...")
+	log.Info("setup() ...")
 	b.setup()
 	// 3.启动 starter
-	logrus.Info("start() ...")
+	log.Info("start() ...")
 	b.start()
 }
 
@@ -37,9 +37,11 @@ func (b *BootApplication) init() {
 }
 func (b *BootApplication) setup() {
 
-	if len(StarterRegister.AllStarters())==0 {
+	num := len(StarterRegister.AllStarters())
+	if num ==0 {
 		panic("Starters len is 0")
 	}
+	log.Println("注册数 为",num)
 
 	for _, starter := range StarterRegister.AllStarters() {
 		starter.Setup(b.StarterContext)

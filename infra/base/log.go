@@ -9,7 +9,6 @@ import (
 	"github.com/tietang/props/ini"
 	"github.com/tietang/props/kvs"
 	"github.com/x-cray/logrus-prefixed-formatter"
-	"io"
 	"os"
 	"path"
 	"path/filepath"
@@ -19,8 +18,6 @@ import (
 
 
 var formatter *prefixed.TextFormatter
-var lfh *utils.LineNumLogrusHook
-var log_writer io.Writer
 
 
 
@@ -82,13 +79,9 @@ func pinit() {
 	}
 	log.SetReportCaller(true)
 
-	//控制台高亮显示
-	formatter.ForceColors=false
-	formatter.DisableColors=true
 
 	//日志文件和滚动配置
 	log.Info("日志系统启动...")
-	log.Debug("开启日志debug 功能")
 
 }
 
@@ -130,7 +123,14 @@ func InitLog(conf kvs.ConfigSource) {
 		log.Errorf("config local file system logger error. %+v", err)
 	}
 	//设置日志文件输出的日志格式
-	formatter :=&log.TextFormatter{} //引用第三方的文本格式
+	//formatter := &log.JSONFormatter{}
+
+	formatter =&prefixed.TextFormatter{} //引用第三方的文本格式
+	//控制台高亮显示
+	formatter.DisableColors=true
+	formatter.FullTimestamp=true
+	formatter.TimestampFormat="2006-01-02.15:04:05.000000"
+	formatter.ForceFormatting=true
 
 	lfHook := lfshook.NewHook(lfshook.WriterMap{
 		log.DebugLevel: writer, // 为不同级别设置不同的输出目的
@@ -142,12 +142,11 @@ func InitLog(conf kvs.ConfigSource) {
 	}, formatter)
 
 	log.AddHook(lfHook)
-	log_writer=writer
 
 }
 
 func showfileLength() {
-	lfh = utils.NewLineNumLogrusHook()
+	lfh := utils.NewLineNumLogrusHook()
 	lfh.EnableFileNameLog = true
 	lfh.EnableFuncNameLog = false
 	log.AddHook(lfh)
