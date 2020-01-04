@@ -10,4 +10,7 @@ func init() {
 	infra.Register(&base.DBxDatabaseStater{})
 	infra.Register(&base.LogStatus{})
 	infra.Register(&base.ValidatorStater{})
+
+	//最后一个阻塞的程序 web
+	infra.Register(&base.IrisStatus{})
 }

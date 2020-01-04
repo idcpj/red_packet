@@ -10,13 +10,13 @@ import (
 )
 
 var validate *validator.Validate
-var translator ut.Translator
+var translator *ut.Translator
 
 func Validate() *validator.Validate {
 	return validate
 }
 
-func Transtate() ut.Translator {
+func Transtate() *ut.Translator {
 	return translator
 }
 

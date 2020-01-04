@@ -17,7 +17,4 @@ func main() {
 	app := infra.NewBootApplication(conf)
 	app.Start()
 
-	//做循环用
-	ints := make(chan int)
-	<-ints
 }
