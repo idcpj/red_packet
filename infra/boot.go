@@ -13,13 +13,12 @@ type BootApplication struct {
 
 func NewBootApplication(conf kvs.ConfigSource) *BootApplication {
 	b := &BootApplication{conf: conf, StarterContext: StarterContext{}}
-	b.StarterContext[KeyProps]=conf
+	b.StarterContext[KeyProps] = conf
 	return b
 }
 
 func (b *BootApplication) Start() {
 	// 1.初始化 starter
-	log.Info("init() ...")
 	b.init()
 	// 2.安装 starter
 	log.Info("setup() ...")
@@ -38,10 +37,10 @@ func (b *BootApplication) init() {
 func (b *BootApplication) setup() {
 
 	num := len(StarterRegister.AllStarters())
-	if num ==0 {
+	if num == 0 {
 		panic("Starters len is 0")
 	}
-	log.Println("注册数 为",num)
+	log.Println("注册数为", num)
 
 	for _, starter := range StarterRegister.AllStarters() {
 		starter.Setup(b.StarterContext)

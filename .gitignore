@@ -1,3 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 ./tmp/
 ./.idea/
+将删除 .idea/
+将删除 go.sum
+将删除 logs/
+将删除 tmp/main.go

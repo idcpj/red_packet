@@ -9,4 +9,5 @@ func init() {
 	infra.Register(&base.PropsStatus{})
 	infra.Register(&base.DBxDatabaseStater{})
 	infra.Register(&base.LogStatus{})
+	infra.Register(&base.ValidatorStater{})
 }
