@@ -6,7 +6,6 @@ import (
 	"github.com/rifflock/lfshook"
 	log "github.com/sirupsen/logrus"
 	"github.com/tietang/go-utils"
-	"github.com/tietang/props/ini"
 	"github.com/tietang/props/kvs"
 	"github.com/x-cray/logrus-prefixed-formatter"
 	"os"
@@ -16,22 +15,17 @@ import (
 	"time"
 )
 
-
 var formatter *prefixed.TextFormatter
-
-
-
 
 type LogStatus struct {
 	infra.BaseStarter
 }
 
 func (p *LogStatus) Init(ctx infra.StarterContext) {
-	pinit()
+	pinit(ctx)
 }
 
-func (p *LogStatus) Setup(ctx infra.StarterContext){
-
+func (p *LogStatus) Setup(ctx infra.StarterContext) {
 
 	conf := ctx.Props()
 
@@ -40,15 +34,13 @@ func (p *LogStatus) Setup(ctx infra.StarterContext){
 	log.Info(" log init success")
 }
 
-
-func pinit() {
-
+func pinit(ctx infra.StarterContext) {
 
 	//formatter :=&log.TextFormatter{}// logrus 自带的文本格式
-	formatter :=&prefixed.TextFormatter{} //引用第三方的文本格式
-	formatter.FullTimestamp=true
-	formatter.TimestampFormat="2006-01-02.15:04:05.000000"
-	formatter.ForceFormatting=true
+	formatter := &prefixed.TextFormatter{} //引用第三方的文本格式
+	formatter.FullTimestamp = true
+	formatter.TimestampFormat = "2006-01-02.15:04:05.000000"
+	formatter.ForceFormatting = true
 
 	formatter.SetColorScheme(&prefixed.ColorScheme{
 		InfoLevelStyle:  "green",
@@ -63,12 +55,11 @@ func pinit() {
 
 	log.SetFormatter(formatter)
 	//日志级别
-	level:=os.Getenv("log.debug")
-	source := ini.NewIniFileConfigSource("config.ini")
-	if level =="true" {
+	level := os.Getenv("log.debug")
+	if level == "true" {
 		log.SetLevel(log.DebugLevel)
-	}else{
-		b, e := source.GetBool("log.debug")
+	} else {
+		b, e := ctx.Props().GetBool("log.debug")
 		if e != nil {
 			panic(e)
 		}
@@ -79,13 +70,10 @@ func pinit() {
 	}
 	log.SetReportCaller(true)
 
-
 	//日志文件和滚动配置
 	log.Info("日志系统启动...")
 
 }
-
-
 
 //初始化log配置，配置logrus日志文件滚动生成和
 func InitLog(conf kvs.ConfigSource) {
@@ -125,12 +113,12 @@ func InitLog(conf kvs.ConfigSource) {
 	//设置日志文件输出的日志格式
 	//formatter := &log.JSONFormatter{}
 
-	formatter =&prefixed.TextFormatter{} //引用第三方的文本格式
+	formatter = &prefixed.TextFormatter{} //引用第三方的文本格式
 	//控制台高亮显示
-	formatter.DisableColors=true
-	formatter.FullTimestamp=true
-	formatter.TimestampFormat="2006-01-02.15:04:05.000000"
-	formatter.ForceFormatting=true
+	formatter.DisableColors = true
+	formatter.FullTimestamp = true
+	formatter.TimestampFormat = "2006-01-02.15:04:05.000000"
+	formatter.ForceFormatting = true
 
 	lfHook := lfshook.NewHook(lfshook.WriterMap{
 		log.DebugLevel: writer, // 为不同级别设置不同的输出目的
